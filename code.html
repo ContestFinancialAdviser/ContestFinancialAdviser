@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/styles/default.min.css">
+    <meta charset="utf-8">
+    <title>Код</title>
+    <style>
+      body{
+        background-color: #1d1d1d;
+      }
+      code{
+        width: 600px;
+        height: 600px;
+      }
+      h3{
+        color: #f2f2f2;
+      }
+      button{
+        outline: none;
+        border-radius: 5px;
+        border: none;
+        width: 200px;
+        height: 40px;
+        cursor: pointer;
+        text-decoration: none;
+        background-color: #335aff;
+        color: #f2f2f2;
+      }
+    </style>
+  </head>
+  <body>
+    <h3> Код программы на языке Python:</h3>
+    <a href="index.html"> <button type="button" name="back">Вернуться на главное меню</button> </a>
+    <pre>
+      <code class="python">
+  # Constants
+
+  CONST_inflation = 1.04
+
+  # car
+
+  CONST_renault_kaptur = 800000
+  CONST_renault_duster = 700000
+  CONST_shivrolet_niva = 560000
+
+  CONST_car_expenses = 17000
+
+  CONST_bank_deposit = 1.03
+
+  CONST_mortgage = 178123
+
+
+  class Family:
+      def __init__(self, car, mortgage, is_file):
+          self.is_file = is_file
+          self.mortgage = mortgage
+          self.car = car
+          self.budget = 0
+          self.husband_salary = 150000
+          self.wife_salary = 50000
+          self.family_expenses = 90000
+          self.rent = 40000
+          self.krasnodar_expenses = 30000
+
+      def first_year(self):
+          for i in range(11):
+              if i != 0:
+                  self.budget *= CONST_bank_deposit
+                  self.budget += self.wife_salary
+
+              self.budget += self.husband_salary
+
+          self.budget -= (self.family_expenses + self.rent) * 11
+
+          self.family_bought_car(self.car)
+
+          self.one_month(True, False)
+
+          self.year_budget(1, is_file)
+
+      def second_year(self):
+          self.mass_inflation()
+          self.trip_to_krasnodar()
+
+          self.half_month(True, False)
+
+          for i in range(11):
+              self.one_month(True, False)
+
+          self.year_budget(2, is_file)
+
+          self.wife_salary += 20000
+
+      def mortgage_year(self, year):
+          self.mass_inflation()
+
+          self.half_month(False, True)
+
+          for i in range(11):
+              self.one_month(False, True)
+
+          self.year_budget(year, is_file)
+
+      def year_after_mortgage(self, year):
+          self.mass_inflation()
+          self.half_month(False, True)
+
+          for i in range(11):
+              self.one_month(False, True)
+
+          self.year_budget(year, is_file)
+
+      def family_bought_car(self, car: int):
+          self.budget -= CONST_car_expenses + car
+
+      def one_month(self, rent: bool, mortgage: bool):
+          self.budget *= CONST_bank_deposit
+          self.budget += self.husband_salary + self.wife_salary
+          if rent:
+              self.budget -= self.rent
+          elif mortgage:
+              self.budget -= self.mortgage
+          self.budget -= self.family_expenses
+
+      def half_month(self, rent: bool, mortgage: bool):
+          self.budget *= CONST_bank_deposit
+          self.budget += (self.husband_salary / 2) + (self.wife_salary / 2)
+          if rent:
+              self.budget -= self.rent
+          elif mortgage:
+              self.budget -= self.mortgage
+          self.budget -= (self.family_expenses / 2)
+
+      def get_budget(self):
+          return round(self.budget, 2)
+
+      def mass_inflation(self):
+          self.husband_salary = self.husband_salary * CONST_inflation
+          self.wife_salary = self.wife_salary * CONST_inflation
+          self.rent = self.rent * CONST_inflation
+          self.family_expenses = self.family_expenses * CONST_inflation
+          self.krasnodar_expenses = self.krasnodar_expenses * CONST_inflation
+
+      def trip_to_krasnodar(self):
+          self.budget -= self.krasnodar_expenses
+
+      def year_budget(self, year, is_file):
+          if not is_file:
+              print(f"\nБюджет на {year} год составляет: {self.get_budget()}")
+          else:
+              with open('Budget.txt', 'a') as F:
+                  F.write(f"\nБюджет на {year} год составляет: {self.get_budget()}")
+
+      def calculate_budget(self):
+          if not is_file:
+              print(f"Бюджет при покупке автомобиля за {self.car} и оформлении ипотеки с месячным платежом {self.mortgage}:")
+          else:
+              with open('Budget.txt', 'w') as F:
+                  F.write(f"Бюджет при покупке автомобиля за {self.car} и оформлении ипотеки с месячным платежом {self.mortgage}:")
+          self.first_year()
+          self.second_year()
+          for i in range(5):
+              self.mortgage_year(i + 3)
+          for i in range(3):
+              self.year_after_mortgage(i + 8)
+
+
+  if __name__ == "__main__":
+      print("Формат вывода - файл (Y/N):")
+      is_file = input()
+
+      if is_file.lower() == 'y':
+          is_file = True
+
+      elif is_file.lower() == 'n':
+          is_file = False
+
+      family = Family(CONST_renault_duster, CONST_mortgage, is_file)
+      family.calculate_budget()
+      print("\n Нажмите Enter, чтобы выйти из программы")
+      input()
+      </code>
+    </pre>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+  </body>
+</html>
